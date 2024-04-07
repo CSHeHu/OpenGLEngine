@@ -29,6 +29,9 @@
     <ClInclude Include="src\Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\triangle.vs">
@@ -37,5 +40,19 @@
     <None Include="shaders\triangle.fs">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="shaders\texture.vs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shaders\texture.fs">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="textures\wall.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\bunny.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

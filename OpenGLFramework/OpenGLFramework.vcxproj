@@ -146,14 +146,21 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Shader.h" />
+    <ClInclude Include="src\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="shaders\texture.fs" />
+    <None Include="shaders\texture.vs" />
     <None Include="shaders\triangle.fs">
       <FileType>Document</FileType>
     </None>
     <None Include="shaders\triangle.vs">
       <FileType>Document</FileType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="textures\bunny.jpg" />
+    <Image Include="textures\wall.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
