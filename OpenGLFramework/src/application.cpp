@@ -6,6 +6,7 @@
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
+#include <cmath>
 
 #include "Shader.h"
 #define STB_IMAGE_IMPLEMENTATION
@@ -178,8 +179,10 @@ int main()
 
         // create transformation
         glm::mat4 trans = glm::mat4(1.0f);
+        trans = glm::scale(trans, glm::vec3(0.8, 0.8, 0.8));
         trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0, 0.0, 1.0));
-        trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
+        trans = glm::translate(trans, glm::vec3((float)sin(glfwGetTime())-0.5, (float)cos(glfwGetTime())-1.5, 0.8));
+        
         unsigned int transformLoc = glGetUniformLocation(ourShader.ID, "transform");
         glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
 
