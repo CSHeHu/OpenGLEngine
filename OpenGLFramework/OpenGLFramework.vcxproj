@@ -149,6 +149,8 @@
     <ClInclude Include="src\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="shaders\coordinate.fs" />
+    <None Include="shaders\coordinate.vs" />
     <None Include="shaders\texture.fs" />
     <None Include="shaders\texture.vs" />
     <None Include="shaders\triangle.fs">
