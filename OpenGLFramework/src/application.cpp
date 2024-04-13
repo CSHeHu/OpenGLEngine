@@ -17,16 +17,12 @@
 #include "InputManager.h"
 
 
-//void mouse_callback(GLFWwindow* window, double xpos, double ypos);
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
-
 // settings
 const unsigned int SCR_WIDTH = 1920;
 const unsigned int SCR_HEIGHT = 1080;
 
 // camera
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
-
 
 // timing
 float deltaTime = 0.0f;	// time between current frame and last frame
@@ -60,7 +56,7 @@ int main()
     InputManager::setCamera(&camera);
     glfwSetFramebufferSizeCallback(window, InputManager::framebufferSizeCallback);
     glfwSetCursorPosCallback(window, InputManager::mouseCallback);
-    glfwSetScrollCallback(window, scroll_callback);
+    glfwSetScrollCallback(window, InputManager::scrollCallback);
 
     // tell GLFW to capture our mouse
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -239,7 +235,7 @@ int main()
         // input
         // -----
         
-        InputManager::processInput(window, &camera, deltaTime);
+        InputManager::processInput(window, deltaTime);
 
         // render
         // ------
@@ -281,8 +277,6 @@ int main()
         
 
 
-        
-
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
@@ -300,13 +294,4 @@ int main()
     // ------------------------------------------------------------------
     glfwTerminate();
     return 0;
-}
-
-
-
-// glfw: whenever the mouse scroll wheel scrolls, this callback is called
-// ----------------------------------------------------------------------
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
-{
-    camera.ProcessMouseScroll(static_cast<float>(yoffset));
 }
