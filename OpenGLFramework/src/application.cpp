@@ -1,5 +1,5 @@
 
-
+#define GLFW_INCLUDE_NONE
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
@@ -11,14 +11,15 @@
 
 #include "Shader.h"
 #include "Camera.h"
+#include "InputManager.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
+#include "InputManager.h"
 
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
-void processInput(GLFWwindow* window);
 
 // settings
 const unsigned int SCR_WIDTH = 1920;
@@ -57,6 +58,10 @@ int main()
         return -1;
     }
     glfwMakeContextCurrent(window);
+
+    //Create inputManager
+    InputManager inputManager(window, &camera);
+
     // callbacks for window resize, mouse movement and scroll movement
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetCursorPosCallback(window, mouse_callback);
@@ -73,9 +78,13 @@ int main()
         return -1;
     }
 
+    
+
     // configure global opengl state
     // -----------------------------
     glEnable(GL_DEPTH_TEST);
+
+
 
     // build and compile our shader program
     // ------------------------------------
@@ -234,7 +243,8 @@ int main()
 
         // input
         // -----
-        processInput(window);
+        
+        inputManager.processInput(deltaTime);
 
         // render
         // ------
@@ -297,27 +307,6 @@ int main()
     return 0;
 }
 
-// process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
-// ---------------------------------------------------------------------------------------------------------
-void processInput(GLFWwindow* window)
-{
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
-
-    // Camera movement
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        camera.ProcessKeyboard(FORWARD, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        camera.ProcessKeyboard(BACKWARD, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        camera.ProcessKeyboard(LEFT, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        camera.ProcessKeyboard(RIGHT, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
-        camera.ProcessKeyboard(UP, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-        camera.ProcessKeyboard(DOWN, deltaTime);
-}
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
 // ---------------------------------------------------------------------------------------------
