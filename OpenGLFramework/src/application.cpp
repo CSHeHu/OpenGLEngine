@@ -17,7 +17,6 @@
 #include "InputManager.h"
 
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 
@@ -27,6 +26,7 @@ const unsigned int SCR_HEIGHT = 1080;
 
 // camera
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
@@ -63,7 +63,7 @@ int main()
     InputManager inputManager(window, &camera);
 
     // callbacks for window resize, mouse movement and scroll movement
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetFramebufferSizeCallback(window, InputManager::framebufferSizeCallback);
     glfwSetCursorPosCallback(window, mouse_callback);
     glfwSetScrollCallback(window, scroll_callback);
 
@@ -308,14 +308,7 @@ int main()
 }
 
 
-// glfw: whenever the window size changed (by OS or user resize) this callback function executes
-// ---------------------------------------------------------------------------------------------
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
-{
-    // make sure the viewport matches the new window dimensions; note that width and 
-    // height will be significantly larger than specified on retina displays.
-    glViewport(0, 0, width, height);
-}
+
 
 // glfw: whenever the mouse moves, this callback is called
 // -------------------------------------------------------
@@ -339,6 +332,7 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 
     camera.ProcessMouseMovement(xoffset, yoffset);
 }
+
 
 // glfw: whenever the mouse scroll wheel scrolls, this callback is called
 // ----------------------------------------------------------------------

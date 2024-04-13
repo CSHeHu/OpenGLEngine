@@ -2,9 +2,8 @@
 #include "InputManager.h"
 
 
-InputManager::InputManager(GLFWwindow* window, Camera* camera) : window(window), camera(camera)
+InputManager::InputManager(GLFWwindow* window, Camera* camera): window(window), camera(camera)
 {
-
 }
 
 void InputManager::processInput(float deltaTime)
@@ -25,4 +24,11 @@ void InputManager::processInput(float deltaTime)
         camera->ProcessKeyboard(UP, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
         camera->ProcessKeyboard(DOWN, deltaTime);
+}
+
+void InputManager::framebufferSizeCallback(GLFWwindow* window, int width, int height)
+{
+    // make sure the viewport matches the new window dimensions; note that width and 
+    // height will be significantly larger than specified on retina displays.
+    glViewport(0, 0, width, height);
 }
