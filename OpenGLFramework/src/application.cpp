@@ -17,7 +17,7 @@
 #include "InputManager.h"
 
 
-void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+//void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 
 // settings
@@ -27,9 +27,11 @@ const unsigned int SCR_HEIGHT = 1080;
 // camera
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 
+/*
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
+*/
 
 // timing
 float deltaTime = 0.0f;	// time between current frame and last frame
@@ -60,8 +62,9 @@ int main()
     glfwMakeContextCurrent(window);
 
     // callbacks for window resize, mouse movement and scroll movement
+    InputManager::setCamera(&camera);
     glfwSetFramebufferSizeCallback(window, InputManager::framebufferSizeCallback);
-    glfwSetCursorPosCallback(window, mouse_callback);
+    glfwSetCursorPosCallback(window, InputManager::mouseCallback);
     glfwSetScrollCallback(window, scroll_callback);
 
     // tell GLFW to capture our mouse
@@ -306,7 +309,7 @@ int main()
 
 
 
-
+/*
 // glfw: whenever the mouse moves, this callback is called
 // -------------------------------------------------------
 void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
@@ -329,6 +332,7 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 
     camera.ProcessMouseMovement(xoffset, yoffset);
 }
+*/
 
 
 // glfw: whenever the mouse scroll wheel scrolls, this callback is called

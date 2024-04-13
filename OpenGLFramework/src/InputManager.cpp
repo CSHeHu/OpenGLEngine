@@ -1,6 +1,10 @@
 
 #include "InputManager.h"
 
+float InputManager::lastX = 1920 / 2.0f;
+float InputManager::lastY = 1080 / 2.0f;
+bool InputManager::firstMouse = true;
+Camera* InputManager::camera = nullptr;
 
 
 void InputManager::processInput(GLFWwindow* window, Camera* camera, float deltaTime)
@@ -28,4 +32,30 @@ void InputManager::framebufferSizeCallback(GLFWwindow* window, int width, int he
     // make sure the viewport matches the new window dimensions; note that width and 
     // height will be significantly larger than specified on retina displays.
     glViewport(0, 0, width, height);
+}
+
+void InputManager::mouseCallback(GLFWwindow* window, double xposIn, double yposIn)
+{
+    float xpos = static_cast<float>(xposIn);
+    float ypos = static_cast<float>(yposIn);
+
+    if (firstMouse)
+    {
+        lastX = xpos;
+        lastY = ypos;
+        firstMouse = false;
+    }
+
+    float xoffset = xpos - lastX;
+    float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
+
+    lastX = xpos;
+    lastY = ypos;
+
+    camera->ProcessMouseMovement(xoffset, yoffset);
+}
+
+void InputManager::setCamera(Camera* cameraPtr)
+{
+    camera = cameraPtr;
 }
