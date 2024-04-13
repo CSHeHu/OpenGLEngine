@@ -59,9 +59,6 @@ int main()
     }
     glfwMakeContextCurrent(window);
 
-    //Create inputManager
-    InputManager inputManager(window, &camera);
-
     // callbacks for window resize, mouse movement and scroll movement
     glfwSetFramebufferSizeCallback(window, InputManager::framebufferSizeCallback);
     glfwSetCursorPosCallback(window, mouse_callback);
@@ -244,7 +241,7 @@ int main()
         // input
         // -----
         
-        inputManager.processInput(deltaTime);
+        InputManager::processInput(window, &camera, deltaTime);
 
         // render
         // ------

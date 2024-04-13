@@ -2,11 +2,8 @@
 #include "InputManager.h"
 
 
-InputManager::InputManager(GLFWwindow* window, Camera* camera): window(window), camera(camera)
-{
-}
 
-void InputManager::processInput(float deltaTime)
+void InputManager::processInput(GLFWwindow* window, Camera* camera, float deltaTime)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
