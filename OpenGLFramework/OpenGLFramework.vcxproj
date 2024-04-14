@@ -140,6 +140,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Object.cpp" />
     <ClCompile Include="src\InputManager.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\Shader.cpp" />
@@ -149,6 +150,7 @@
     <ClCompile Include="src\TextureManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Object.h" />
     <ClInclude Include="src\MeshData.h" />
     <ClInclude Include="src\InputManager.h" />
     <ClInclude Include="src\Camera.h" />
@@ -170,6 +172,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="textures\bunny.jpg" />
+    <Image Include="textures\haisuli.png" />
     <Image Include="textures\wall.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -36,6 +36,9 @@
     <ClCompile Include="src\TextureManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Object.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Shader.h">
@@ -54,6 +57,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\TextureManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Object.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -78,6 +84,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="textures\bunny.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\haisuli.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
