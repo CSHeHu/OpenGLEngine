@@ -146,6 +146,7 @@
     <ClCompile Include="src\application.cpp" />
     <ClCompile Include="src\glad.c" />
     <ClCompile Include="src\MeshData.cpp" />
+    <ClCompile Include="src\TextureManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\MeshData.h" />
@@ -153,6 +154,7 @@
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\stb_image.h" />
+    <ClInclude Include="src\TextureManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\coordinate.fs" />
