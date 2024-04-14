@@ -2,7 +2,7 @@
 #include <vector>
 
 
-Object::Object(const std::string& vertexPath, const std::string& fragmentPath, const std::string& texturePath1, const std::string& texturePath2) {
+Object::Object(const std::string& vertexPath, const std::string& fragmentPath, const std::string& texturePath1, const std::string& texturePath2, std::vector<float> vertices) {
     // Build and compile the shader program
     shader = new Shader(vertexPath.c_str(), fragmentPath.c_str());
     

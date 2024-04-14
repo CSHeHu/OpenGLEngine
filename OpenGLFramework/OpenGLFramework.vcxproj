@@ -159,8 +159,10 @@
     <ClInclude Include="src\TextureManager.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="shaders\coordinate.fs" />
-    <None Include="shaders\coordinate.vs" />
+    <None Include="shaders\cube.fs" />
+    <None Include="shaders\cube.vs" />
+    <None Include="shaders\pyramid.fs" />
+    <None Include="shaders\pyramid.vs" />
     <None Include="shaders\texture.fs" />
     <None Include="shaders\texture.vs" />
     <None Include="shaders\triangle.fs">

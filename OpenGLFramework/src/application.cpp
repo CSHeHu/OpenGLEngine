@@ -79,7 +79,8 @@ int main()
     glEnable(GL_DEPTH_TEST);
 
 
-    Object cube("shaders/coordinate.vs", "shaders/coordinate.fs", "textures/bunny.jpg", "textures/wall.jpg");
+    Object cube("shaders/cube.vs", "shaders/cube.fs", "textures/bunny.jpg", "textures/wall.jpg", cubeVertices);
+    Object pyramid("shaders/pyramid.vs", "shaders/pyramid.fs", "textures/haisuli.png", "textures/wall.jpg", pyramidVertices);
     
  
     // render loop
@@ -102,10 +103,10 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
-        //textureManager.bindTextures();
+        //bind cubes textures
         cube.textureManager.bindTextures();
 
-        // activate shader
+        // activate cubes shader
         cube.shader->use();
 
         // pass projection matrix to shader (note that in this case it could change every frame)
@@ -118,7 +119,7 @@ int main()
         view = camera.GetViewMatrix();
         cube.shader->setMat4("view", view);
 
-        // render object
+        // render cube object
         glBindVertexArray(cube.VAO);
 
         for (int i = 0; i < 10; ++i) {
@@ -127,10 +128,24 @@ int main()
             float angle = 20.0f * i;
             model = glm::rotate(model, glm::radians(angle) + (float)glfwGetTime(), glm::vec3(1.0f, 0.3f, 0.5f));
             cube.shader->setMat4("model", model);
-            glDrawArrays(GL_TRIANGLES, 0, 36);
+            glDrawArrays(GL_TRIANGLES, 0, cubeVertices.size() / 5);
         }
         
+        pyramid.textureManager.bindTextures();
+        pyramid.shader->use();
+        pyramid.shader->setMat4("projection", projection);
+        pyramid.shader->setMat4("view", view);
 
+        glBindVertexArray(pyramid.VAO);
+
+        for (int i = 0; i < 10; ++i) {
+            glm::mat4 model = glm::mat4(1.0f);
+            model = glm::translate(model, pyramidPositions.at(i));
+            float angle = 50.0f * i;
+            model = glm::rotate(model, glm::radians(angle) + (float)glfwGetTime(), glm::vec3(0.5f, 0.7f, 0.2f));
+            pyramid.shader->setMat4("model", model);
+            glDrawArrays(GL_TRIANGLES, 0, pyramidVertices.size() / 5);
+        }
 
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
