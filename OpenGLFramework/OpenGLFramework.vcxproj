@@ -161,16 +161,12 @@
   <ItemGroup>
     <None Include="shaders\cube.fs" />
     <None Include="shaders\cube.vs" />
+    <None Include="shaders\projection.fs" />
+    <None Include="shaders\projection.vs" />
     <None Include="shaders\pyramid.fs" />
     <None Include="shaders\pyramid.vs" />
-    <None Include="shaders\texture.fs" />
-    <None Include="shaders\texture.vs" />
-    <None Include="shaders\triangle.fs">
-      <FileType>Document</FileType>
-    </None>
-    <None Include="shaders\triangle.vs">
-      <FileType>Document</FileType>
-    </None>
+    <None Include="shaders\view.fs" />
+    <None Include="shaders\view.vs" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="textures\bunny.jpg" />

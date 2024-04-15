@@ -1,4 +1,3 @@
-
 #define GLFW_INCLUDE_NONE
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -72,17 +71,18 @@ int main()
         return -1;
     }
 
-    
+
 
     // configure global opengl state
     // -----------------------------
     glEnable(GL_DEPTH_TEST);
 
-
+    Shader projectionShader("shaders/projection.vs", "shaders/projection.fs");
+    Shader viewShader("shaders/view.vs", "shaders/view.fs");
     Object cube("shaders/cube.vs", "shaders/cube.fs", "textures/bunny.jpg", "textures/wall.jpg", cubeVertices);
     Object pyramid("shaders/pyramid.vs", "shaders/pyramid.fs", "textures/haisuli.png", "textures/wall.jpg", pyramidVertices);
-    
- 
+
+
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
@@ -94,7 +94,7 @@ int main()
 
         // input
         // -----
-        
+
         InputManager::processInput(window, deltaTime);
 
         // render
@@ -102,21 +102,25 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        // Set up projection matrix
+        projectionShader.use();
+        glm::mat4 projection = glm::mat4(1.0f);
+        projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+        projectionShader.setMat4("projection", projection);
+
+        // Set up view matrix
+        viewShader.use();
+        glm::mat4 view = glm::mat4(1.0f);
+        view = camera.GetViewMatrix();
+        viewShader.setMat4("view", view);
 
         //bind cubes textures
         cube.textureManager.bindTextures();
-
         // activate cubes shader
         cube.shader->use();
-
-        // pass projection matrix to shader (note that in this case it could change every frame)
-        glm::mat4 projection = glm::mat4(1.0f);
-        projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+        // pass projection matrix to shader (note that in this case it could change every frame)       
         cube.shader->setMat4("projection", projection);
-
         // camera/view
-        glm::mat4 view = glm::mat4(1.0f);
-        view = camera.GetViewMatrix();
         cube.shader->setMat4("view", view);
 
         // render cube object
@@ -130,7 +134,7 @@ int main()
             cube.shader->setMat4("model", model);
             glDrawArrays(GL_TRIANGLES, 0, cubeVertices.size() / 5);
         }
-        
+
         pyramid.textureManager.bindTextures();
         pyramid.shader->use();
         pyramid.shader->setMat4("projection", projection);
@@ -154,7 +158,7 @@ int main()
         glfwPollEvents();
     }
 
-    
+
 
     // glfw: terminate, clearing all previously allocated GLFW resources.
     // ------------------------------------------------------------------
