@@ -22,7 +22,7 @@
 // settings
 const unsigned int SCR_WIDTH = 1920;
 const unsigned int SCR_HEIGHT = 1080;
-const float COLLISION_BUFFER = 2.5f;
+const float COLLISION_BUFFER = 1.0f;
 
 // camera
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
@@ -180,7 +180,7 @@ bool isCollision() {
     for (int i = 0; i < cubePositions.size(); ++i)
     {
         // Add collision buffer to object's position
-        glm::vec3 adjustedObjectPos = cubePositions.at(i) + glm::vec3(COLLISION_BUFFER, COLLISION_BUFFER, COLLISION_BUFFER);
+        glm::vec3 adjustedObjectPos = cubePositions.at(i);
 
         // Check if camera position intersects with adjusted object position
         if (std::abs(camera.Position.x - adjustedObjectPos.x) < COLLISION_BUFFER &&
