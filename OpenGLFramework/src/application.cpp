@@ -22,6 +22,7 @@
 // settings
 const unsigned int SCR_WIDTH = 1920;
 const unsigned int SCR_HEIGHT = 1080;
+const float COLLISION_BUFFER = 2.5f;
 
 // camera
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
@@ -29,6 +30,8 @@ Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 // timing
 float deltaTime = 0.0f;	// time between current frame and last frame
 float lastFrame = 0.0f;
+
+bool isCollision();
 
 int main()
 {
@@ -126,7 +129,7 @@ int main()
         // render cube object
         glBindVertexArray(cube.VAO);
 
-        for (int i = 0; i < 10; ++i) {
+        for (int i = 0; i < cubePositions.size(); ++i) {
             glm::mat4 model = glm::mat4(1.0f);
             model = glm::translate(model, cubePositions.at(i));
             float angle = 20.0f * i;
@@ -142,7 +145,7 @@ int main()
 
         glBindVertexArray(pyramid.VAO);
 
-        for (int i = 0; i < 10; ++i) {
+        for (int i = 0; i < pyramidPositions.size(); ++i) {
             glm::mat4 model = glm::mat4(1.0f);
             model = glm::translate(model, pyramidPositions.at(i));
             float angle = 50.0f * i;
@@ -151,6 +154,12 @@ int main()
             glDrawArrays(GL_TRIANGLES, 0, pyramidVertices.size() / 5);
         }
 
+        // check collision
+        if (isCollision()) {
+            std::cout << "HIT" << std::flush;
+            std::cout << std::endl;
+
+        }
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
@@ -164,4 +173,26 @@ int main()
     // ------------------------------------------------------------------
     glfwTerminate();
     return 0;
+}
+
+bool isCollision() {
+    // Iterate through each object's position
+    for (int i = 0; i < cubePositions.size(); ++i)
+    {
+        // Add collision buffer to object's position
+        glm::vec3 adjustedObjectPos = cubePositions.at(i) + glm::vec3(COLLISION_BUFFER, COLLISION_BUFFER, COLLISION_BUFFER);
+
+        // Check if camera position intersects with adjusted object position
+        if (std::abs(camera.Position.x - adjustedObjectPos.x) < COLLISION_BUFFER &&
+            std::abs(camera.Position.y - adjustedObjectPos.y) < COLLISION_BUFFER &&
+            std::abs(camera.Position.z - adjustedObjectPos.z) < COLLISION_BUFFER)
+        {
+            // Collision detected
+            cubePositions.erase(cubePositions.begin() + i);
+            return true;
+        }
+    }
+
+    // No collision detected
+    return false;
 }
