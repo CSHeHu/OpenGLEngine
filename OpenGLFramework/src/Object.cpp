@@ -2,9 +2,9 @@
 #include <vector>
 
 
-Object::Object(const std::string& vertexPath, const std::string& fragmentPath, const std::string& texturePath1, const std::string& texturePath2, std::vector<float> vertices) {
+Object::Object(const std::string& vertexPath, const std::string& fragmentPath, const std::string& texturePath1, const std::string& texturePath2, const std::vector<float>& vertices, const glm::vec3& position) : pos(position) {
     // Build and compile the shader program
-    shader = new Shader(vertexPath.c_str(), fragmentPath.c_str());
+    shader = std::make_shared<Shader>(vertexPath.c_str(), fragmentPath.c_str());
     
     // Generate vertex array object and buffers
     glGenVertexArrays(1, &VAO);
@@ -37,5 +37,8 @@ Object::~Object() {
     
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
-    delete shader;
+}
+
+glm::vec3 Object::getPosition() const{
+    return pos;
 }

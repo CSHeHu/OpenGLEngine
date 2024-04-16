@@ -7,6 +7,7 @@
 #include <gtc/type_ptr.hpp>
 #include <cmath>
 #include <vector>
+#include <memory>
 
 #include "Shader.h"
 #include "Camera.h"
@@ -31,7 +32,7 @@ Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 float deltaTime = 0.0f;	// time between current frame and last frame
 float lastFrame = 0.0f;
 
-bool isCollision();
+bool isCollision(std::vector<std::shared_ptr<Object>>& cubeInstances);
 
 int main()
 {
@@ -78,13 +79,23 @@ int main()
 
     // configure global opengl state
     // -----------------------------
+    std::vector<std::shared_ptr<Object>> cubeInstances;
+    std::vector<std::shared_ptr<Object>> pyramidInstances;
     glEnable(GL_DEPTH_TEST);
-
     Shader projectionShader("shaders/projection.vs", "shaders/projection.fs");
     Shader viewShader("shaders/view.vs", "shaders/view.fs");
-    Object cube("shaders/cube.vs", "shaders/cube.fs", "textures/bunny.jpg", "textures/wall.jpg", cubeVertices);
-    Object pyramid("shaders/pyramid.vs", "shaders/pyramid.fs", "textures/haisuli.png", "textures/wall.jpg", pyramidVertices);
+    
+    //Create objects
+    for (int i = 0; i < cubePositions.size(); ++i) {
+        std::shared_ptr<Object> cube = std::make_shared<Object>("shaders/cube.vs", "shaders/cube.fs", "textures/bunny.jpg", "textures/wall.jpg", cubeVertices, cubePositions.at(i));
+        cubeInstances.push_back(cube);
+    }
+    for (int i = 0; i < pyramidPositions.size(); ++i) {
+        std::shared_ptr<Object> pyramid = std::make_shared<Object>("shaders/pyramid.vs", "shaders/pyramid.fs", "textures/haisuli.png", "textures/wall.jpg", pyramidVertices, pyramidPositions.at(i));
+        pyramidInstances.push_back(pyramid);
+    }
 
+    
 
     // render loop
     // -----------
@@ -117,45 +128,43 @@ int main()
         view = camera.GetViewMatrix();
         viewShader.setMat4("view", view);
 
-        //bind cubes textures
-        cube.textureManager.bindTextures();
-        // activate cubes shader
-        cube.shader->use();
-        // pass projection matrix to shader (note that in this case it could change every frame)       
-        cube.shader->setMat4("projection", projection);
-        // camera/view
-        cube.shader->setMat4("view", view);
+       
 
-        // render cube object
-        glBindVertexArray(cube.VAO);
-
-        for (int i = 0; i < cubePositions.size(); ++i) {
+        for (int i = 0; i < cubeInstances.size(); ++i) {
+            cubeInstances.at(i)->textureManager.bindTextures();
+            cubeInstances.at(i)->shader->use();
+            cubeInstances.at(i)->shader->setMat4("projection", projection);
+            cubeInstances.at(i)->shader->setMat4("view", view);
+            glBindVertexArray(cubeInstances.at(i)->VAO);
+            
             glm::mat4 model = glm::mat4(1.0f);
-            model = glm::translate(model, cubePositions.at(i));
+            model = glm::translate(model, cubeInstances.at(i)->getPosition());
             float angle = 20.0f * i;
             model = glm::rotate(model, glm::radians(angle) + (float)glfwGetTime(), glm::vec3(1.0f, 0.3f, 0.5f));
-            cube.shader->setMat4("model", model);
+            cubeInstances.at(i)->shader->setMat4("model", model);
             glDrawArrays(GL_TRIANGLES, 0, cubeVertices.size() / 5);
+            
         }
 
-        pyramid.textureManager.bindTextures();
-        pyramid.shader->use();
-        pyramid.shader->setMat4("projection", projection);
-        pyramid.shader->setMat4("view", view);
+        for (int i = 0; i < pyramidInstances.size(); ++i) {
+            pyramidInstances.at(i)->textureManager.bindTextures();
+            pyramidInstances.at(i)->shader->use();
+            pyramidInstances.at(i)->shader->setMat4("projection", projection);
+            pyramidInstances.at(i)->shader->setMat4("view", view);
+            glBindVertexArray(pyramidInstances.at(i)->VAO);
 
-        glBindVertexArray(pyramid.VAO);
-
-        for (int i = 0; i < pyramidPositions.size(); ++i) {
             glm::mat4 model = glm::mat4(1.0f);
-            model = glm::translate(model, pyramidPositions.at(i));
-            float angle = 50.0f * i;
-            model = glm::rotate(model, glm::radians(angle) + (float)glfwGetTime(), glm::vec3(0.5f, 0.7f, 0.2f));
-            pyramid.shader->setMat4("model", model);
+            model = glm::translate(model, pyramidInstances.at(i)->getPosition());
+            float angle = 20.0f * i;
+            model = glm::rotate(model, glm::radians(angle) + (float)glfwGetTime(), glm::vec3(1.0f, 0.3f, 0.5f));
+            pyramidInstances.at(i)->shader->setMat4("model", model);
             glDrawArrays(GL_TRIANGLES, 0, pyramidVertices.size() / 5);
         }
 
+
+
         // check collision
-        if (isCollision()) {
+        if (isCollision(cubeInstances)) {
             std::cout << "HIT" << std::flush;
             std::cout << std::endl;
 
@@ -175,12 +184,12 @@ int main()
     return 0;
 }
 
-bool isCollision() {
+bool isCollision(std::vector<std::shared_ptr<Object>>& cubeInstances) {
     // Iterate through each object's position
-    for (int i = 0; i < cubePositions.size(); ++i)
+    for (int i = 0; i < cubeInstances.size(); ++i)
     {
         // Add collision buffer to object's position
-        glm::vec3 adjustedObjectPos = cubePositions.at(i);
+        glm::vec3 adjustedObjectPos = cubeInstances.at(i)->getPosition();
 
         // Check if camera position intersects with adjusted object position
         if (std::abs(camera.Position.x - adjustedObjectPos.x) < COLLISION_BUFFER &&
@@ -188,7 +197,7 @@ bool isCollision() {
             std::abs(camera.Position.z - adjustedObjectPos.z) < COLLISION_BUFFER)
         {
             // Collision detected
-            cubePositions.erase(cubePositions.begin() + i);
+            cubeInstances.erase(cubeInstances.begin() + i);
             return true;
         }
     }
