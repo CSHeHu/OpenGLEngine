@@ -23,7 +23,7 @@
 // settings
 const unsigned int SCR_WIDTH = 1920;
 const unsigned int SCR_HEIGHT = 1080;
-const float COLLISION_BUFFER = 1.0f;
+const float COLLISION_BUFFER = 1.2f;
 
 // camera
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
@@ -32,7 +32,8 @@ Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 float deltaTime = 0.0f;	// time between current frame and last frame
 float lastFrame = 0.0f;
 
-bool isCollision(std::vector<std::shared_ptr<Object>>& cubeInstances);
+bool isCollisionCube(std::vector<std::shared_ptr<Object>>& cubeInstances);
+bool isCollisionPyramid(std::vector<std::shared_ptr<Object>>& pyramidInstances);
 
 int main()
 {
@@ -129,7 +130,7 @@ int main()
         viewShader.setMat4("view", view);
 
        
-
+        // renred objects
         for (int i = 0; i < cubeInstances.size(); ++i) {
             cubeInstances.at(i)->textureManager.bindTextures();
             cubeInstances.at(i)->shader->use();
@@ -164,8 +165,15 @@ int main()
 
 
         // check collision
-        if (isCollision(cubeInstances)) {
-            std::cout << "HIT" << std::flush;
+        if (isCollisionCube(cubeInstances)) {
+            std::cout << "HIT Cube" << std::flush;
+            std::cout << std::endl;
+
+        }
+
+        // check collision
+        if (isCollisionPyramid(pyramidInstances)) {
+            std::cout << "HIT Pyramid" << std::flush;
             std::cout << std::endl;
 
         }
@@ -184,17 +192,17 @@ int main()
     return 0;
 }
 
-bool isCollision(std::vector<std::shared_ptr<Object>>& cubeInstances) {
+bool isCollisionCube(std::vector<std::shared_ptr<Object>>& cubeInstances) {
     // Iterate through each object's position
     for (int i = 0; i < cubeInstances.size(); ++i)
     {
-        // Add collision buffer to object's position
-        glm::vec3 adjustedObjectPos = cubeInstances.at(i)->getPosition();
+        
+        glm::vec3 cubePos = cubeInstances.at(i)->getPosition();
 
         // Check if camera position intersects with adjusted object position
-        if (std::abs(camera.Position.x - adjustedObjectPos.x) < COLLISION_BUFFER &&
-            std::abs(camera.Position.y - adjustedObjectPos.y) < COLLISION_BUFFER &&
-            std::abs(camera.Position.z - adjustedObjectPos.z) < COLLISION_BUFFER)
+        if (std::abs(camera.Position.x - cubePos.x) < COLLISION_BUFFER &&
+            std::abs(camera.Position.y - cubePos.y) < COLLISION_BUFFER &&
+            std::abs(camera.Position.z - cubePos.z) < COLLISION_BUFFER)
         {
             // Collision detected
             cubeInstances.erase(cubeInstances.begin() + i);
@@ -203,5 +211,28 @@ bool isCollision(std::vector<std::shared_ptr<Object>>& cubeInstances) {
     }
 
     // No collision detected
+    return false;
+}
+
+bool isCollisionPyramid(std::vector<std::shared_ptr<Object>>& pyramidInstances) {
+    for (int i = 0; i < pyramidInstances.size(); ++i)
+    {
+        glm::vec3 pyramidPos = pyramidInstances.at(i)->getPosition();
+        
+        // Check if camera is inside the bounding box of the pyramid
+        if (std::abs(camera.Position.x - pyramidPos.x) < COLLISION_BUFFER &&
+            std::abs(camera.Position.y - pyramidPos.y) < COLLISION_BUFFER &&
+            std::abs(camera.Position.z - pyramidPos.z) < COLLISION_BUFFER)
+        {
+            // Calculate the displacement vector from pyramid to camera
+            glm::vec3 displacement = camera.Position - pyramidPos;
+            
+            // Calculate the intersection point between camera and pyramid
+            camera.Position = pyramidPos + glm::normalize(displacement) * (1.05f * COLLISION_BUFFER);
+
+            return true;
+        }
+    }
+
     return false;
 }
