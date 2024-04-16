@@ -51,6 +51,7 @@ struct Character {
 
 std::map<GLchar, Character> Characters;
 unsigned int VAO, VBO;
+int points = 0;
 
 int main()
 {
@@ -110,9 +111,7 @@ int main()
     Shader projectionShader("shaders/projection.vs", "shaders/projection.fs");
     Shader viewShader("shaders/view.vs", "shaders/view.fs");
     Shader textShader("shaders/text.vs", "shaders/text.fs");
-    glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(SCR_WIDTH), 0.0f, static_cast<float>(SCR_HEIGHT));
-    textShader.use();
-    glUniformMatrix4fv(glGetUniformLocation(textShader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+    
     
     
     //Create objects
@@ -238,10 +237,8 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        RenderText(textShader, std::to_string(cubeInstances.size()) + " Bunnies left", 25.0f, SCR_HEIGHT - 25.0f, 0.5f, glm::vec3(1.0, 1.0f, 1.0f));
-        RenderText(textShader, "x", SCR_WIDTH / 2.0f, SCR_HEIGHT / 2.0f, 0.5f, glm::vec3(1.0, 1.0f, 1.0f));
-
         
+
         // Set up projection matrix
         projectionShader.use();
         glm::mat4 projection = glm::mat4(1.0f);
@@ -253,6 +250,14 @@ int main()
         glm::mat4 view = glm::mat4(1.0f);
         view = camera.GetViewMatrix();
         viewShader.setMat4("view", view);
+
+        // setup text
+        textShader.use();
+        RenderText(textShader, "Points: " + std::to_string(points), 25.0f, SCR_HEIGHT - 25.0f, 0.5f, glm::vec3(1.0, 1.0f, 1.0f));
+        RenderText(textShader, "x", SCR_WIDTH / 2.0f, SCR_HEIGHT / 2.0f, 0.5f, glm::vec3(1.0, 1.0f, 1.0f));
+        glm::mat4 textProjection = glm::ortho(0.0f, static_cast<float>(SCR_WIDTH), 0.0f, static_cast<float>(SCR_HEIGHT));
+        textShader.setMat4("projection", textProjection);
+        
 
         
         // renred objects
@@ -332,8 +337,7 @@ bool isCollisionCube(std::vector<std::shared_ptr<Object>>& cubeInstances) {
         {
             // Collision detected
             cubeInstances.erase(cubeInstances.begin() + i);
-            
-                
+            points += 100;
             return true;
         }
     }
@@ -357,7 +361,7 @@ bool isCollisionPyramid(std::vector<std::shared_ptr<Object>>& pyramidInstances) 
             
             // Calculate the intersection point between camera and pyramid
             camera.Position = pyramidPos + glm::normalize(displacement) * (1.05f * COLLISION_BUFFER);
-
+            points -= 10;
             return true;
         }
     }
