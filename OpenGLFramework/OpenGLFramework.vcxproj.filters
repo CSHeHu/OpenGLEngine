@@ -64,20 +64,16 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="shaders\triangle.vs">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="shaders\triangle.fs">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="shaders\texture.vs">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="shaders\texture.fs">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="shaders\coordinate.fs" />
-    <None Include="shaders\coordinate.vs" />
+    <None Include="shaders\cube.fs" />
+    <None Include="shaders\cube.vs" />
+    <None Include="shaders\projection.fs" />
+    <None Include="shaders\projection.vs" />
+    <None Include="shaders\pyramid.fs" />
+    <None Include="shaders\pyramid.vs" />
+    <None Include="shaders\view.fs" />
+    <None Include="shaders\view.vs" />
+    <None Include="shaders\text.fs" />
+    <None Include="shaders\text.vs" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="textures\wall.jpg">
@@ -89,5 +85,8 @@
     <Image Include="textures\haisuli.png">
       <Filter>Resource Files</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="textures\Roboto.ttf" />
   </ItemGroup>
 </Project>
