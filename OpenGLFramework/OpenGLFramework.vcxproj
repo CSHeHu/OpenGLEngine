@@ -148,6 +148,7 @@
     <ClCompile Include="src\glad.c" />
     <ClCompile Include="src\MeshData.cpp" />
     <ClCompile Include="src\TextureManager.cpp" />
+    <ClCompile Include="src\TextManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Object.h" />
@@ -157,6 +158,7 @@
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\stb_image.h" />
     <ClInclude Include="src\TextureManager.h" />
+    <ClInclude Include="src\TextManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\cube.fs" />

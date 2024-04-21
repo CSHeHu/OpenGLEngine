@@ -29,6 +29,7 @@ Object::Object(const std::string& vertexPath, const std::string& fragmentPath, c
     shader->use();
     shader->setInt("texture1", 0);
     shader->setInt("texture2", 1);
+
     
 }
 
