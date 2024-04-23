@@ -99,6 +99,8 @@ int main()
     Shader projectionShader("shaders/projection.vs", "shaders/projection.fs");
     Shader viewShader("shaders/view.vs", "shaders/view.fs");
     Shader textShader("shaders/text.vs", "shaders/text.fs");
+    Shader lightShader("shaders/lightSource.vs", "shaders/lightSource.fs");
+    Shader lightTargetShader("shaders/lightTarget.vs", "shaders/lightTarget.fs");
     
     //Create objects
     for (int i = 0; i < cubePositions.size(); ++i) {
@@ -109,6 +111,13 @@ int main()
         std::shared_ptr<Object> pyramid = std::make_shared<Object>("shaders/pyramid.vs", "shaders/pyramid.fs", "textures/haisuli.png", "textures/wall.jpg", pyramidVertices, pyramidPositions.at(i));
         pyramidInstances.push_back(pyramid);
     }
+
+    //light cube
+    glm::vec3 lightPos(5.0f, 5.0f, -25.0f);
+    Object lightCube("shaders/lightSource.vs", "shaders/lightSource.fs", "", "", cubeVertices, lightPos);
+    glm::vec3 lightTargetPos(1.0f, 1.0f, -25.0f);
+    Object lightTargetCube("shaders/lightTarget.vs", "shaders/lightTarget.fs", "", "", cubeVertices, lightTargetPos);
+
     
     TextManager textManager(textShader, "textures/Roboto.ttf");
 
@@ -156,6 +165,27 @@ int main()
 
         
         // renred objects
+        lightCube.shader->use();
+        lightCube.shader->setMat4("projection", projection);
+        lightCube.shader->setMat4("view", view);
+        glBindVertexArray(lightCube.VAO);
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, lightCube.getPosition());
+        lightCube.shader->setMat4("model", model);
+        glDrawArrays(GL_TRIANGLES, 0, cubeVertices.size() / 5);
+
+        lightTargetCube.shader->use();
+        lightTargetCube.shader->setVec3("objectColor", 1.0f, 0.5f, 0.31f);
+        lightTargetCube.shader->setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+        lightTargetCube.shader->setMat4("projection", projection);
+        lightTargetCube.shader->setMat4("view", view);
+        glBindVertexArray(lightTargetCube.VAO);
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, lightTargetCube.getPosition());
+        lightTargetCube.shader->setMat4("model", model);
+        glDrawArrays(GL_TRIANGLES, 0, cubeVertices.size() / 5);
+
+
         for (int i = 0; i < cubeInstances.size(); ++i) {
             cubeInstances.at(i)->textureManager.bindTextures();
             cubeInstances.at(i)->shader->use();
