@@ -33,6 +33,30 @@ Object::Object(const std::string& vertexPath, const std::string& fragmentPath, c
     
 }
 
+Object::Object(const std::string& vertexPath, const std::string& fragmentPath, const std::vector<float>& vertices, const glm::vec3& position) : pos(position) {
+    // Build and compile the shader program
+    shader = std::make_shared<Shader>(vertexPath.c_str(), fragmentPath.c_str());
+
+    // Generate vertex array object and buffers
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+
+    // Bind vertex array object
+    glBindVertexArray(VAO);
+
+    // Bind and set vertex buffer data
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertices.size(), vertices.data(), GL_STATIC_DRAW);
+
+    // Set vertex attributes
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+    // normal attribute
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+
+}
+
 Object::~Object() {
     // Clean up resources
     

@@ -161,28 +161,14 @@
     <ClInclude Include="src\TextManager.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="shaders\cube.fs" />
-    <None Include="shaders\cube.vs" />
     <None Include="shaders\lightSource.fs" />
     <None Include="shaders\lightSource.vs" />
     <None Include="shaders\lightTarget.fs" />
     <None Include="shaders\lightTarget.vs" />
     <None Include="shaders\projection.fs" />
     <None Include="shaders\projection.vs" />
-    <None Include="shaders\pyramid.fs" />
-    <None Include="shaders\pyramid.vs" />
-    <None Include="shaders\text.fs" />
-    <None Include="shaders\text.vs" />
     <None Include="shaders\view.fs" />
     <None Include="shaders\view.vs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="textures\bunny.jpg" />
-    <Image Include="textures\haisuli.png" />
-    <Image Include="textures\wall.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Font Include="textures\Roboto.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

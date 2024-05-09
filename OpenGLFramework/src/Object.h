@@ -11,6 +11,7 @@
 class Object {
 public:
     Object(const std::string& vertexPath, const std::string& fragmentPath, const std::string& texturePath1, const std::string& texturePath2, const std::vector<float>& vertices, const glm::vec3& position);
+    Object(const std::string& vertexPath, const std::string& fragmentPath, const std::vector<float>& vertices, const glm::vec3& position);
     ~Object();
     glm::vec3 getPosition() const;
 

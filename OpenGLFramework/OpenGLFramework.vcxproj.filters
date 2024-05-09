@@ -70,29 +70,13 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="shaders\cube.fs" />
-    <None Include="shaders\cube.vs" />
     <None Include="shaders\projection.fs" />
     <None Include="shaders\projection.vs" />
-    <None Include="shaders\pyramid.fs" />
-    <None Include="shaders\pyramid.vs" />
     <None Include="shaders\view.fs" />
     <None Include="shaders\view.vs" />
-    <None Include="shaders\text.fs" />
-    <None Include="shaders\text.vs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="textures\wall.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="textures\bunny.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="textures\haisuli.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <Font Include="textures\Roboto.ttf" />
+    <None Include="shaders\lightSource.fs" />
+    <None Include="shaders\lightSource.vs" />
+    <None Include="shaders\lightTarget.fs" />
+    <None Include="shaders\lightTarget.vs" />
   </ItemGroup>
 </Project>
