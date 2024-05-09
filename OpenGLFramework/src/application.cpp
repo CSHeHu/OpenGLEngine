@@ -98,9 +98,9 @@ int main()
 
 
     //light cube
-    glm::vec3 lightPos(5.0f, 5.0f, -5.0f);
+    glm::vec3 lightPos(1.0f, 1.0f, -5.0f);
     Object lightCube("shaders/lightSource.vs", "shaders/lightSource.fs", cubeVertices, lightPos);
-    glm::vec3 lightTargetPos(1.0f, 2.0f, 5.0f);
+    glm::vec3 lightTargetPos(3.0f, 2.0f, -7.0f);
     Object lightTargetCube("shaders/lightTarget.vs", "shaders/lightTarget.fs", cubeVertices, lightTargetPos);
 
 
@@ -139,7 +139,9 @@ int main()
         viewShader.setMat4("view", view);
 
 
-        
+        //move light source
+        lightCube.setPosition(lightCube.getPosition() + (float)sin(glfwGetTime())/100);
+
         // renred objects
         lightCube.shader->use();
         lightCube.shader->setMat4("projection", projection);
@@ -153,11 +155,14 @@ int main()
         lightTargetCube.shader->use();
         lightTargetCube.shader->setVec3("objectColor", 1.0f, 0.5f, 0.31f);
         lightTargetCube.shader->setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+        lightTargetCube.shader->setVec3("viewPos", camera.Position);
+        lightTargetCube.shader->setVec3("lightPos", lightCube.getPosition());
         lightTargetCube.shader->setMat4("projection", projection);
         lightTargetCube.shader->setMat4("view", view);
         glBindVertexArray(lightTargetCube.VAO);
         model = glm::mat4(1.0f);
         model = glm::translate(model, lightTargetCube.getPosition());
+        model = glm::rotate(model, glm::radians(45.0f), glm::vec3(1.0f, 5.0f, 45.0f));
         lightTargetCube.shader->setMat4("model", model);
         glDrawArrays(GL_TRIANGLES, 0, cubeVertices.size() / 5);
 

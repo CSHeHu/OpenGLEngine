@@ -67,3 +67,10 @@ Object::~Object() {
 glm::vec3 Object::getPosition() const{
     return pos;
 }
+
+void Object::setPosition(glm::vec3 position)
+{
+    pos = position;
+}
+
+

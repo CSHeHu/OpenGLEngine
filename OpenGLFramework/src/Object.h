@@ -14,6 +14,7 @@ public:
     Object(const std::string& vertexPath, const std::string& fragmentPath, const std::vector<float>& vertices, const glm::vec3& position);
     ~Object();
     glm::vec3 getPosition() const;
+    void setPosition(glm::vec3 position);
 
     std::shared_ptr<Shader> shader;
     TextureManager textureManager;
