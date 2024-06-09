@@ -162,7 +162,7 @@ int main()
         glBindVertexArray(lightTargetCube.VAO);
         model = glm::mat4(1.0f);
         model = glm::translate(model, lightTargetCube.getPosition());
-        model = glm::rotate(model, glm::radians(45.0f), glm::vec3(1.0f, 5.0f, 45.0f));
+        model = glm::rotate(model, glm::radians(45.0f) + (float)glfwGetTime(), glm::vec3(1.0f, 5.0f, 45.0f));
         lightTargetCube.shader->setMat4("model", model);
         glDrawArrays(GL_TRIANGLES, 0, cubeVertices.size() / 5);
 
