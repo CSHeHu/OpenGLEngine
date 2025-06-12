@@ -1,3 +1,0 @@
-/home/heissendo/dev/OpenGLEngine/build/CMakeFiles/OpenGLEngine.dir
-/home/heissendo/dev/OpenGLEngine/build/CMakeFiles/edit_cache.dir
-/home/heissendo/dev/OpenGLEngine/build/CMakeFiles/rebuild_cache.dir
